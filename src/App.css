@@ -1,0 +1,25 @@
+body.bg-dark {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+}
+
+.card {
+  margin-top: 20px;
+}
+
+button {
+  transition: 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+.list-group-item {
+  cursor: pointer;
+}
+
+.list-group-item:hover {
+  background-color: #f1f1f1;
+}
