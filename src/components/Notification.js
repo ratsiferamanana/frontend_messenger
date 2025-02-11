@@ -2,7 +2,7 @@ import { io } from 'socket.io-client';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import React,{useState, useEffect} from 'react';
-const socket = io("http://localhost:5000");
+const socket = io("https://chat-backend-5iep.onrender.com");
 
 
 function Notification() {
