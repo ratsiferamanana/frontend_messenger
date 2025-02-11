@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
 import { Container, Form, Button, ListGroup, Card, Modal } from "react-bootstrap";
 import Notification from "./Notification";
-const socket = io("https://chat-backend-5iep.onrender.com");
+const socket = io("https://chat-backend-8r8l.onrender.com");
 
 function Message() {
   const [message, setMessage] = useState("");
