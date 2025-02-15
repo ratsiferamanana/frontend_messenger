@@ -46,7 +46,7 @@ function Message() {
       <Card className="shadow-lg">
         <Card.Body>
             <Notification/>
-          <h2 className="text-center text-primary">💬 Chat en temps réel</h2>
+          <h2 className="text-center text-primary">💬 Chat en temps réel par jimmy ratsiferamanana</h2>
           <h2 className="text-center text-primary mt-5"><strong className="text-secondary">UTILISATEUR : </strong>{username}</h2>
          
           <ListGroup variant="flush" style={{ maxHeight: "400px", overflowY: "auto" }}>
