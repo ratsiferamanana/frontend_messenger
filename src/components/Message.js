@@ -2,22 +2,32 @@ import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
 import { Container, Form, Button, ListGroup, Card, Modal } from "react-bootstrap";
 import Notification from "./Notification";
-const socket = io("https://chat-backend-8r8l.onrender.com");
+import EmojiPicker from 'emoji-picker-react'; // Importez EmojiPicker
+const socket = io("http://localhost:5000");
 
 function Message() {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [username, setUsername] = useState("");
   const [showModal, setShowModal] = useState(true);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);// Gérer l'affichage du sélecteur d'émojis
+
+  const playNotificationSound = () => {
+    const audio = new Audio("/mixkit-correct-answer-tone-2870.wav");
+    audio.muted = true;  // Active mute au début
+    audio.play().then(() => {
+        audio.muted = false;  // Désactive mute après le démarrage
+    }).catch((error) => console.log("Erreur de lecture :", error));
+};
 
   useEffect(() => {
-   
     socket.on("chat message", (msg) => {
       setMessages((prev) => [...prev, msg]);
+      playNotificationSound();
     });
-    socket.on("chat history", (history) =>{
-        setMessages(history);
-    })
+    socket.on("chat history", (history) => {
+      setMessages(history);
+    });
 
     return () => {
       socket.off("chat message");
@@ -31,7 +41,7 @@ function Message() {
       setShowModal(false);
     }
   };
-  
+
   // Envoyer un message
   const sendMessage = (e) => {
     e.preventDefault();
@@ -41,14 +51,22 @@ function Message() {
     }
   };
 
+  // Ajouter un émoji dans le message
+  const onEmojiClick = (emoji) => {
+    setMessage(message + emoji.emoji);
+    setShowEmojiPicker(false); // Fermer le sélecteur après avoir ajouté l'émoji
+  };
+
   return (
     <Container className="mt-4">
       <Card className="shadow-lg">
         <Card.Body>
-            <Notification/>
-          <h2 className="text-center text-primary">💬 Chat en temps réel par jimmy ratsiferamanana</h2>
-          <h2 className="text-center text-primary mt-5"><strong className="text-secondary">UTILISATEUR : </strong>{username}</h2>
-         
+          <Notification />
+          <h2 className="text-center text-primary">💬 Chat en temps réel par Jimmy Ratsiferamanana</h2>
+          <h2 className="text-center text-primary mt-5">
+            <strong className="text-secondary">UTILISATEUR : </strong>{username}
+          </h2>
+
           <ListGroup variant="flush" style={{ maxHeight: "400px", overflowY: "auto" }}>
             {messages.map((msg, index) => (
               <ListGroup.Item key={index}>
@@ -56,6 +74,7 @@ function Message() {
               </ListGroup.Item>
             ))}
           </ListGroup>
+
           <Form onSubmit={sendMessage} className="d-flex mt-3">
             <Form.Control
               type="text"
@@ -64,7 +83,32 @@ function Message() {
               placeholder="Écris un message..."
               className="me-2"
             />
-            <Button variant="primary" type="submit">Envoyer</Button>
+            <Button
+              variant="secondary"
+              onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+              className="me-2"
+            >
+              😀
+            </Button>
+
+            {showEmojiPicker && (
+  <div
+    style={{
+      position: "fixed", // Fixe l'élément à la fenêtre
+      top: "50%", // Centrer verticalement
+      left: "50%", // Centrer horizontalement
+      transform: "translate(-50%, -50%)", // Ajuster pour qu'il soit parfaitement centré
+      zIndex: 9999, // Assurez-vous qu'il est au-dessus des autres éléments
+    }}
+  >
+    <EmojiPicker onEmojiClick={onEmojiClick} />
+  </div>
+)}
+
+
+            <Button variant="primary" type="submit">
+              Envoyer
+            </Button>
           </Form>
         </Card.Body>
       </Card>
@@ -85,9 +129,7 @@ function Message() {
         </Modal.Body>
       </Modal>
     </Container>
-
-
-
   );
 }
+
 export default Message;
