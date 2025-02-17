@@ -3,7 +3,7 @@ import io from "socket.io-client";
 import { Container, Form, Button, ListGroup, Card, Modal } from "react-bootstrap";
 import Notification from "./Notification";
 import EmojiPicker from 'emoji-picker-react'; // Importez EmojiPicker
-const socket = io("http://localhost:5000");
+const socket = io("https://chat-backend-8r8l.onrender.com");
 
 function Message() {
   const [message, setMessage] = useState("");
