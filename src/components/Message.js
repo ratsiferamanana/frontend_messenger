@@ -107,7 +107,7 @@ function Message() {
 
 
             <Button variant="primary" type="submit">
-              Envoyer
+            <i class="bi bi-send-fill"></i>
             </Button>
           </Form>
         </Card.Body>
